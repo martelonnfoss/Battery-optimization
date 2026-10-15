@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("NO2_2025.csv")
+df = pd.read_csv("data/NO2_2025.csv")
 
 price_col = "NOK_per_kWh"
 
