@@ -16,8 +16,6 @@ Metode:
      slik at de blir sammenlignbare selv om de har ulik skala.
   3. Hvert scenario har et mål i persentiler (se MAL under). Dagen som ligger
      nærmest målet (euklidsk avstand) velges.
-  4. I tillegg plasseres alle dager i scenarioet de ligger nærmest. Andelen
-     dager i hvert scenario kan brukes som sannsynlighet i en stokastisk modell.
 """
 
 import pandas as pd
@@ -53,9 +51,7 @@ avstand = pd.DataFrame({
     for s, mal in MAL.items()
 })
 
-# --- 4. Velg beste dag per scenario + sannsynligheter ---------------------------
-naermeste = avstand.idxmin(axis=1)               # scenarioet hver dag ligner mest
-sannsynlighet = naermeste.value_counts(normalize=True).reindex(MAL.keys(), fill_value=0)
+# --- 4. Velg beste dag per scenario -------------------------------------------
 
 oppsummering = []
 rader = []
@@ -68,7 +64,6 @@ for s, mal in MAL.items():
         "snitt": dager.loc[dato, "snitt"],
         "std": dager.loc[dato, "std"],
         "maks": dager.loc[dato, "maks"],
-        "sannsynlighet": sannsynlighet[s],
     })
     priser = df.loc[df["dato"] == dato, PRISKOLONNE].values
     for t, p in enumerate(priser):
@@ -77,7 +72,7 @@ for s, mal in MAL.items():
 
 oppsummering = pd.DataFrame(oppsummering)
 pd.set_option("display.width", 120)
-print(oppsummering.round({"snitt": 1, "std": 1, "maks": 1, "sannsynlighet": 3}).to_string(index=False))
+print(oppsummering.round({"snitt": 1, "std": 1, "maks": 1}).to_string(index=False))
 print(f"\nÅrssnitt: {dager['snitt'].mean():.1f} {PRISKOLONNE}")
 
 # Lagre: én rad per scenario og time (5 x 24 rader)
@@ -92,7 +87,7 @@ try:
     for _, r in oppsummering.iterrows():
         priser = df.loc[df["dato"] == r["dato"], PRISKOLONNE].values
         plt.plot(range(24), priser, marker="o", markersize=3,
-                 label=f"{r['scenario']}: {r['dato']} (p={r['sannsynlighet']:.2f})")
+                 label=f"{r['scenario']}: {r['dato']}")
     plt.xlabel("Time")
     plt.ylabel(PRISKOLONNE)
     plt.title("Representative dager for prisscenarioene – NO2 2025")
