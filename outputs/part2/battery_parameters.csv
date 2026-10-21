@@ -1,0 +1,2 @@
+e_min,e_max,p_charge,p_discharge,eta_charge,eta_discharge,e_initial,dt
+10.0,100.0,25.0,25.0,0.95,0.95,50.0,1.0
