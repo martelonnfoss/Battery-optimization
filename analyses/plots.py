@@ -7,7 +7,7 @@ project_root = Path(__file__).resolve().parent.parent
 df = pd.read_csv(project_root / "scenariodager_NO2_2025.csv")
 
 date_col = "date" if "date" in df.columns else "dato"   # older files use "dato"
-price_col = "EUR_per_MWh"
+price_col = "EUR_per_kWh"
 
 descriptions = {
     "s1": "Low price level, small variations",
@@ -26,7 +26,7 @@ for s, desc in descriptions.items():
             label=f"{s.upper()} ({date}) - {desc}")
 
 ax.set_xlabel("Hour of day")
-ax.set_ylabel("Price [EUR/MWh]")
+ax.set_ylabel("Price [EUR/kWh]")
 ax.set_title("Representative scenario days for NO2, 2025")
 ax.set_xticks(range(0, 24))
 ax.legend(fontsize=8, loc="upper left")
