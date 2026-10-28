@@ -97,6 +97,7 @@ try:
     plt.legend()
     plt.grid(alpha=0.3)
     plt.tight_layout()
-    plt.savefig("scenariodager_NO2_2025.png", dpi=150)
+    plt.show()
+    #plt.savefig("scenariodager_NO2_2025.png", dpi=150)
 except ImportError:
     pass
