@@ -1,4 +1,4 @@
-scenario,dato,EUR_per_MWh,time_start,time_end
+scenario,date,EUR_per_MWh,time_start,time_end
 s1,2025-01-17,36.17,0,1
 s1,2025-01-17,35.53,1,2
 s1,2025-01-17,35.83,2,3

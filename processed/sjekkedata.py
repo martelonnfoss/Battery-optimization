@@ -1,8 +1,8 @@
 import pandas as pd
 
-df = pd.read_csv("data/NO2_2025.csv")
+df = pd.read_csv("data/day_ahead_no2_2025_hourly.csv")
 
-price_col = "NOK_per_kWh"
+price_col = "da_price_EUR_MWh"  # kolonnen med prisdata
 
 # 1) Sjekk manglende verdier (NaN)
 n_missing = df[price_col].isna().sum()

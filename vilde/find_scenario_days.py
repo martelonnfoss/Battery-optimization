@@ -1,99 +1,104 @@
 """
-Finner den beste representative dagen for hvert av de fem prisscenarioene:
+Finds the most representative day for each of the five price scenarios:
 
-  s1  Lavt prisnivå med små prisvariasjoner
-  s2  Lavt/moderat prisnivå
-  s3  Normal/typisk prisdag
-  s4  Høyt prisnivå med større prisvariasjoner
-  s5  Ekstrem/høy prisdag med pristopp(er)
+  s1  Low price level with small price variations
+  s2  Low/moderate price level
+  s3  Normal/typical price day
+  s4  High price level with larger price variations
+  s5  Extreme/high price day with price spike(s)
 
-Metode:
-  1. Hver dag beskrives med tre nøkkeltall:
-       snitt – gjennomsnittspris i døgnet       (prisnivå)
-       std   – standardavvik over døgnet         (prisvariasjon)
-       maks  – høyeste timepris i døgnet         (pristopp)
-  2. Nøkkeltallene gjøres om til persentiler (0-100) blant alle årets dager,
-     slik at de blir sammenlignbare selv om de har ulik skala.
-  3. Hvert scenario har et mål i persentiler (se MAL under). Dagen som ligger
-     nærmest målet (euklidsk avstand) velges.
+Method:
+  1. Each day is described by three key figures:
+       mean – average price over the day          (price level)
+       std  – standard deviation over the day     (price variation)
+       max  – highest hourly price of the day     (price spike)
+  2. The key figures are converted to percentiles (0-100) among all days of
+     the year, so they become comparable even though they have different scales.
+  3. Each scenario has a target in percentiles (see TARGETS below). The day
+     closest to the target (Euclidean distance) is selected.
+
+All prices are in EUR/MWh.
 """
 
 import pandas as pd
 import numpy as np
 
-FIL = "NO2_2025_forenklet.csv"
-PRISKOLONNE = "EUR_per_MWh"
-UTFIL = "scenariodager_NO2_2025.csv"
+INPUT_FILE = "data/clean_data/NO2_2025_forenklet_day_ahead.csv"
+PRICE_COLUMN = "EUR_per_MWh"   # prices in EUR/MWh
+PRICE_UNIT = "EUR/MWh"
+OUTPUT_FILE = "scenariodager_NO2_2025.csv"      # used by modell/prisdata.py and part2/
+SUMMARY_FILE = "scenario_oppsummering.csv"
 
-# Mål for hvert scenario, i persentiler: (snitt, std, maks)
-# Juster disse om dere vil ha andre definisjoner av scenarioene.
-MAL = {
-    "s1": {"beskrivelse": "Lavt prisnivå, små variasjoner",      "snitt": 10, "std": 10, "maks": 10},
-    "s2": {"beskrivelse": "Lavt/moderat prisnivå",                 "snitt": 30, "std": 30, "maks": 30},
-    "s3": {"beskrivelse": "Normal/typisk prisdag",                 "snitt": 50, "std": 50, "maks": 50},
-    "s4": {"beskrivelse": "Høyt prisnivå, større variasjoner",     "snitt": 80, "std": 80, "maks": 80},
-    "s5": {"beskrivelse": "Ekstrem/høy prisdag med pristopp(er)",  "snitt": 97, "std": 97, "maks": 99},
+# Target for each scenario, in percentiles: (mean, std, max)
+# Adjust these if you want other definitions of the scenarios.
+TARGETS = {
+    "s1": {"description": "Low price level, small variations",          "mean": 10, "std": 10, "max": 10},
+    "s2": {"description": "Low/moderate price level",                   "mean": 30, "std": 30, "max": 30},
+    "s3": {"description": "Normal/typical price day",                   "mean": 50, "std": 50, "max": 50},
+    "s4": {"description": "High price level, larger variations",        "mean": 80, "std": 80, "max": 80},
+    "s5": {"description": "Extreme/high price day with price spike(s)", "mean": 97, "std": 97, "max": 99},
 }
-NOKKELTALL = ["snitt", "std", "maks"]
+KEY_FIGURES = ["mean", "std", "max"]
 
-# --- 1. Les data og lag nøkkeltall per dag ------------------------------------
-df = pd.read_csv(FIL)
-df["time"] = df.groupby("dato").cumcount()   # time i døgnet, 0-23
+# --- 1. Read data and compute key figures per day -----------------------------
+df = pd.read_csv(INPUT_FILE)
+df["hour"] = df.groupby("dato").cumcount()   # hour of the day, 0-23
 
-dager = df.groupby("dato")[PRISKOLONNE].agg(snitt="mean", std="std", maks="max")
+days = df.groupby("dato")[PRICE_COLUMN].agg(mean="mean", std="std", min="min", max="max")
 
-# --- 2. Persentiler ---------------------------------------------------------
-pers = dager.rank(pct=True) * 100
+# --- 2. Percentiles -----------------------------------------------------------
+pct = days.rank(pct=True) * 100
 
-# --- 3. Avstand fra hver dag til hvert scenariomål ----------------------------
-avstand = pd.DataFrame({
-    s: np.sqrt(sum((pers[k] - mal[k]) ** 2 for k in NOKKELTALL))
-    for s, mal in MAL.items()
+# --- 3. Distance from each day to each scenario target ------------------------
+distance = pd.DataFrame({
+    s: np.sqrt(sum((pct[k] - target[k]) ** 2 for k in KEY_FIGURES))
+    for s, target in TARGETS.items()
 })
 
-# --- 4. Velg beste dag per scenario -------------------------------------------
-
-oppsummering = []
-rader = []
-for s, mal in MAL.items():
-    dato = avstand[s].idxmin()
-    oppsummering.append({
+# --- 4. Select the best day per scenario --------------------------------------
+summary = []
+rows = []
+for s, target in TARGETS.items():
+    date = distance[s].idxmin()
+    summary.append({
         "scenario": s,
-        "beskrivelse": mal["beskrivelse"],
-        "dato": dato,
-        "snitt": dager.loc[dato, "snitt"],
-        "std": dager.loc[dato, "std"],
-        "maks": dager.loc[dato, "maks"],
+        "description": target["description"],
+        "date": date,
+        "mean_EUR_per_MWh": days.loc[date, "mean"],
+        "std_EUR_per_MWh": days.loc[date, "std"],
+        "min_EUR_per_MWh": days.loc[date, "min"],
+        "max_EUR_per_MWh": days.loc[date, "max"],
     })
-    priser = df.loc[df["dato"] == dato, PRISKOLONNE].values
-    for t, p in enumerate(priser):
-        rader.append({"scenario": s, "dato": dato, PRISKOLONNE: p,
-                      "time_start": t, "time_end": t + 1})
+    prices = df.loc[df["dato"] == date, PRICE_COLUMN].values
+    for t, p in enumerate(prices):
+        rows.append({"scenario": s, "date": date, PRICE_COLUMN: p,
+                     "time_start": t, "time_end": t + 1})
 
-oppsummering = pd.DataFrame(oppsummering)
-pd.set_option("display.width", 120)
-print(oppsummering.round({"snitt": 1, "std": 1, "maks": 1}).to_string(index=False))
-print(f"\nÅrssnitt: {dager['snitt'].mean():.1f} {PRISKOLONNE}")
+summary = pd.DataFrame(summary)
+pd.set_option("display.width", 140)
+print(summary.round(1).to_string(index=False))
+print(f"\nAnnual average price: {days['mean'].mean():.1f} {PRICE_UNIT}")
 
-# Lagre: én rad per scenario og time (5 x 24 rader)
-pd.DataFrame(rader).to_csv(UTFIL, index=False)
-oppsummering.to_csv("scenario_oppsummering.csv", index=False)
-print(f"\nLagret timeprisene til {UTFIL} og oppsummeringen til scenario_oppsummering.csv")
+# Save: one row per scenario and hour (5 x 24 rows)
+pd.DataFrame(rows).to_csv(OUTPUT_FILE, index=False)
+summary.to_csv(SUMMARY_FILE, index=False)
+print(f"\nSaved hourly prices to {OUTPUT_FILE} and the summary to {SUMMARY_FILE}")
 
-# --- Valgfritt: plott ---------------------------------------------------------
+# --- Optional: plot -----------------------------------------------------------
 try:
     import matplotlib.pyplot as plt
     plt.figure(figsize=(9, 4.5))
-    for _, r in oppsummering.iterrows():
-        priser = df.loc[df["dato"] == r["dato"], PRISKOLONNE].values
-        plt.plot(range(24), priser, marker="o", markersize=3,
-                 label=f"{r['scenario']}: {r['dato']}")
-    plt.xlabel("Time")
-    plt.ylabel(PRISKOLONNE)
-    plt.title("Representative dager for prisscenarioene – NO2 2025")
+    for _, r in summary.iterrows():
+        prices = df.loc[df["dato"] == r["date"], PRICE_COLUMN].values
+        plt.plot(range(24), prices, marker="o", markersize=3,
+                 label=f"{r['scenario']}: {r['date']}")
+    plt.xlabel("Hour of day")
+    plt.ylabel(f"Price [{PRICE_UNIT}]")
+    plt.title("Representative days for the price scenarios – NO2 2025")
     plt.legend()
     plt.grid(alpha=0.3)
     plt.tight_layout()
-    plt.savefig("scenariodager_NO2_2025.png", dpi=150)
+    plt.show()
+    #plt.savefig("scenariodager_NO2_2025.png", dpi=150)
 except ImportError:
     pass
