@@ -1,5 +1,5 @@
 """
-Finner den mest gjennomsnittlige dagen i den forenklede prisfila (NO2_2025_forenklet.csv).
+Finner den mest gjennomsnittlige dagen i den forenklede prisfila (NO2_2025_forenklet_day_ahead.csv).
 
 Fila har kolonnene dato, EUR_per_MWh, time_start og time_end.
 Døgnene med 23 og 25 timer er allerede fjernet, så alle døgn har 24 timer
@@ -14,7 +14,7 @@ Metode:
 import pandas as pd
 import numpy as np
 
-FIL = "NO2_2025_forenklet.csv"   # endre sti ved behov
+FIL = "data/clean_data/NO2_2025_forenklet_day_ahead.csv"   # endre sti ved behov
 PRISKOLONNE = "EUR_per_MWh"
 UTFIL = "gjennomsnittsdag_NO2_2025.csv"
 

@@ -23,7 +23,7 @@ All prices are in EUR/MWh.
 import pandas as pd
 import numpy as np
 
-INPUT_FILE = "NO2_2025_forenklet.csv"
+INPUT_FILE = "data/clean_data/NO2_2025_forenklet_day_ahead.csv"
 PRICE_COLUMN = "EUR_per_MWh"   # prices in EUR/MWh
 PRICE_UNIT = "EUR/MWh"
 OUTPUT_FILE = "scenariodager_NO2_2025.csv"      # used by modell/prisdata.py and part2/
