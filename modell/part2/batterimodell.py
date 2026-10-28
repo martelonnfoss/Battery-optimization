@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # project root, so 'modell' can be imported
+
 import pyomo.environ as pyo
 
 from modell.batteriparametere import (
