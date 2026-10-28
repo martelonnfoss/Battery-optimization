@@ -22,7 +22,7 @@ sannsynlighet = {
 prosjektmappe = Path(__file__).resolve().parent.parent
 
 dag1 = pd.read_csv(
-    prosjektmappe / "gjennomsnittsdag_NO2_2025.csv"
+    prosjektmappe / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv"
 )
 
 dag2 = pd.read_csv(

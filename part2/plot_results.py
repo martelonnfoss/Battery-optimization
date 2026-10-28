@@ -154,7 +154,7 @@ def main():
     root = Path(__file__).resolve().parent.parent
 
     day1, day2 = load_prices(
-        root / "gjennomsnittsdag_NO2_2025.csv",
+        root / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv",
         root / "scenariodager_NO2_2025.csv",
     )
 

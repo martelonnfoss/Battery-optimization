@@ -7,7 +7,7 @@ project_root = Path(__file__).resolve().parent.parent
 df = pd.read_csv(project_root / "scenariodager_NO2_2025.csv")
 
 date_col = "date" if "date" in df.columns else "dato"   # older files use "dato"
-price_col = "EUR_per_kWh"
+price_col = "EUR_per_MWh"
 
 descriptions = {
     "s1": "Low price level, small variations",

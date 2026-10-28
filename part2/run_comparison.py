@@ -41,7 +41,7 @@ def main():
     project_root = Path(__file__).resolve().parent.parent
 
     # Juster disse hvis datafilene er lagret et annet sted.
-    day1_path = project_root / "gjennomsnittsdag_NO2_2025.csv"
+    day1_path = project_root / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv"
     scenarios_path = project_root / "scenariodager_NO2_2025.csv"
 
     day1, day2 = load_prices(day1_path, scenarios_path)

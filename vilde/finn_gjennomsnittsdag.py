@@ -12,11 +12,13 @@ Metode:
 """
 
 import pandas as pd
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent   # Battery-optimization
 import numpy as np
 
-FIL = "data/clean_data/NO2_2025_forenklet_day_ahead.csv"   # endre sti ved behov
+FIL = PROJECT_ROOT / "data" / "clean_data" / "NO2_2025_forenklet_day_ahead.csv"   # endre sti ved behov
 PRISKOLONNE = "EUR_per_MWh"
-UTFIL = "gjennomsnittsdag_NO2_2025.csv"
+UTFIL = PROJECT_ROOT / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv"
 
 # --- 1. Les data -------------------------------------------------------------
 df = pd.read_csv(FIL)
@@ -68,6 +70,6 @@ try:
     plt.legend()
     plt.grid(alpha=0.3)
     plt.tight_layout()
-    plt.savefig("gjennomsnittsdag_NO2_2025.png", dpi=150)
+    plt.savefig(PROJECT_ROOT / "gjennomsnittsdag_NO2_2025.png", dpi=150)
 except ImportError:
     pass
