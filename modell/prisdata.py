@@ -28,7 +28,7 @@ dag1 = pd.read_csv(
 )
 
 dag2 = pd.read_csv(
-    prosjektmappe / "scenariodager_NO2_2025.csv"
+    prosjektmappe / "data" / "clean_data" / "scenariodager_NO2_2025.csv"
 )
 
 

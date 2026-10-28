@@ -1,6 +1,8 @@
 import pandas as pd
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent   # Battery-optimization
 
-df = pd.read_csv("data/day_ahead_no2_2025_hourly.csv")
+df = pd.read_csv(PROJECT_ROOT / "data" / "raw_data" / "day_ahead_no2_2025_hourly.csv")
 
 price_col = "da_price_EUR_MWh"  # kolonnen med prisdata
 

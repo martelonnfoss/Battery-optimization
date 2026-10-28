@@ -1,5 +1,5 @@
 """
-Simplifies the day-ahead price data (data/day_ahead_no2_2025_hourly.csv)
+Simplifies the day-ahead price data (data/raw_data/day_ahead_no2_2025_hourly.csv)
 into exactly the same format as NO2_2025_forenklet.csv:
   - Timestamps (UTC) are converted to Norwegian local time.
   - Removes the two days that do not have 24 hours (30 March with 23 hours
@@ -12,9 +12,11 @@ Result: 363 days x 24 hours = 8712 rows, each day starting at midnight.
 """
 
 import pandas as pd
+from pathlib import Path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent   # Battery-optimization
 
-INPUT_FILE = "data/raw_data/day_ahead_no2_2025_hourly.csv"
-OUTPUT_FILE = "NO2_2025_forenklet_day_ahead.csv"
+INPUT_FILE = PROJECT_ROOT / "data" / "raw_data" / "day_ahead_no2_2025_hourly.csv"
+OUTPUT_FILE = PROJECT_ROOT / "data" / "clean_data" / "NO2_2025_forenklet_day_ahead.csv"
 
 df = pd.read_csv(INPUT_FILE)
 local = pd.to_datetime(df["timestamp"], utc=True).dt.tz_convert("Europe/Oslo")
