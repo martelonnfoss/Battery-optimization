@@ -16,7 +16,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent   # Battery-optimization
 import numpy as np
 
-FIL = PROJECT_ROOT / "data" / "clean_data" / "NO2_2025_forenklet_day_ahead.csv"   # endre sti ved behov
+FIL = PROJECT_ROOT / "data" / "clean_data" / "NO2_2025_forenklet_day_ahead.csv"   
 PRISKOLONNE = "EUR_per_MWh"
 UTFIL = PROJECT_ROOT / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv"
 
