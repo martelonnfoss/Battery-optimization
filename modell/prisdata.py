@@ -2,6 +2,8 @@ import pandas as pd
 from pathlib import Path
 
 
+
+
 # 1. Definer scenarier og sannsynligheter
 
 scenarioer = ["s1", "s2", "s3", "s4", "s5"]
@@ -22,7 +24,7 @@ sannsynlighet = {
 prosjektmappe = Path(__file__).resolve().parent.parent
 
 dag1 = pd.read_csv(
-    prosjektmappe / "gjennomsnittsdag_NO2_2025.csv"
+    prosjektmappe / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv"
 )
 
 dag2 = pd.read_csv(
