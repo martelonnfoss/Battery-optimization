@@ -155,7 +155,7 @@ def main():
 
     day1, day2 = load_prices(
         root / "data" / "clean_data" / "gjennomsnittsdag_NO2_2025.csv",
-        root / "scenariodager_NO2_2025.csv",
+        root / "data" / "clean_data" / "scenariodager_NO2_2025.csv",
     )
 
     probabilities = {s: 0.2 for s in day2}

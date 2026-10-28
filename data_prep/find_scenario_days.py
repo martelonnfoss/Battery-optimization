@@ -28,8 +28,8 @@ import numpy as np
 INPUT_FILE = PROJECT_ROOT / "data" / "clean_data" / "NO2_2025_forenklet_day_ahead.csv"
 PRICE_COLUMN = "EUR_per_MWh"   # prices in EUR/MWh
 PRICE_UNIT = "EUR/MWh"
-OUTPUT_FILE = PROJECT_ROOT / "scenariodager_NO2_2025.csv"      # used by modell/prisdata.py and part2/
-SUMMARY_FILE = PROJECT_ROOT / "scenario_oppsummering.csv"
+OUTPUT_FILE = PROJECT_ROOT / "data" / "clean_data" / "scenariodager_NO2_2025.csv"      # used by modell/prisdata.py and part2/
+SUMMARY_FILE = PROJECT_ROOT / "data" / "clean_data" / "scenario_oppsummering.csv"
 
 # Target for each scenario, in percentiles: (mean, std, max)
 # Adjust these if you want other definitions of the scenarios.

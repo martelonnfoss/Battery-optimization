@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 # ---- Load the scenario days (same file as the optimisation model uses) ----
 project_root = Path(__file__).resolve().parent.parent
-df = pd.read_csv(project_root / "scenariodager_NO2_2025.csv")
+df = pd.read_csv(project_root / "data" / "clean_data" / "scenariodager_NO2_2025.csv")
 
 date_col = "date" if "date" in df.columns else "dato"   # older files use "dato"
 price_col = "EUR_per_MWh"
