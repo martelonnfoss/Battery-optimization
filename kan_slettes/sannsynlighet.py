@@ -1,11 +1,11 @@
 import pandas as pd
 from scipy.stats import skew
 
-df = pd.read_csv("/Users/vildevikane/Desktop/Battery-optimization/data/NO2_2025.csv")
+df = pd.read_csv("data/clean_data/NO2_2025_forenklet_day_ahead.csv")
 df["time_start"] = pd.to_datetime(df["time_start"], utc=True).dt.tz_convert("Europe/Oslo")
 df["date"] = df["time_start"].dt.date
 
-price_col = "EUR_per_kWh"
+price_col = "EUR_per_MWh"
 daily_mean = df.groupby("date")[price_col].mean()
 
 print("Skjevhet (skewness) i daglig snittpris:", round(skew(daily_mean), 2))
