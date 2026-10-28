@@ -1,6 +1,6 @@
-scenario,description,date,mean_EUR_per_MWh,std_EUR_per_MWh,max_EUR_per_MWh
-s1,"Low price level, small variations",2025-01-17,38.43541666666667,4.337803470568411,54.91
-s2,Low/moderate price level,2025-03-26,53.8525,5.795523197299339,72.1
-s3,Normal/typical price day,2025-06-30,64.54958333333333,12.574553489926174,83.76
-s4,"High price level, larger variations",2025-05-13,80.19958333333334,25.575456386623053,130.0
-s5,Extreme/high price day with price spike(s),2025-02-03,128.38208333333333,53.402711051452506,224.48
+scenario,description,date,mean_EUR_per_MWh,std_EUR_per_MWh,min_EUR_per_MWh,max_EUR_per_MWh
+s1,"Low price level, small variations",2025-01-17,38.43541666666667,4.337803470568411,35.53,54.91
+s2,Low/moderate price level,2025-03-26,53.8525,5.795523197299339,50.22,72.1
+s3,Normal/typical price day,2025-06-30,64.54958333333333,12.574553489926174,30.0,83.76
+s4,"High price level, larger variations",2025-05-13,80.19958333333334,25.575456386623053,36.61,130.0
+s5,Extreme/high price day with price spike(s),2025-02-03,128.38208333333333,53.402711051452506,56.03,224.48

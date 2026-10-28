@@ -44,7 +44,7 @@ KEY_FIGURES = ["mean", "std", "max"]
 df = pd.read_csv(INPUT_FILE)
 df["hour"] = df.groupby("dato").cumcount()   # hour of the day, 0-23
 
-days = df.groupby("dato")[PRICE_COLUMN].agg(mean="mean", std="std", max="max")
+days = df.groupby("dato")[PRICE_COLUMN].agg(mean="mean", std="std", min="min", max="max")
 
 # --- 2. Percentiles -----------------------------------------------------------
 pct = days.rank(pct=True) * 100
@@ -66,6 +66,7 @@ for s, target in TARGETS.items():
         "date": date,
         "mean_EUR_per_MWh": days.loc[date, "mean"],
         "std_EUR_per_MWh": days.loc[date, "std"],
+        "min_EUR_per_MWh": days.loc[date, "min"],
         "max_EUR_per_MWh": days.loc[date, "max"],
     })
     prices = df.loc[df["dato"] == date, PRICE_COLUMN].values
