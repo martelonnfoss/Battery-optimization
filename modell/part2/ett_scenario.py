@@ -12,7 +12,7 @@ from modell.part2.batterimodell import lag_modell
 
 # 1. Velg scenario
 
-scenario = "s1"
+scenario = "s5"
 
 
 # 2. Hent priser for de to døgnene
