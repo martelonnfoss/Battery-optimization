@@ -26,7 +26,7 @@ for s, desc in descriptions.items():
             label=f"{s.upper()} ({date}) - {desc}")
 
 ax.set_xlabel("Hour of day")
-ax.set_ylabel("Price [EUR/kWh]")
+ax.set_ylabel("Price [EUR/MWh]")
 ax.set_title("Representative scenario days for NO2, 2025")
 ax.set_xticks(range(0, 24))
 ax.legend(fontsize=8, loc="upper left")
