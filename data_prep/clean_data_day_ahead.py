@@ -2,8 +2,7 @@
 Simplifies the day-ahead price data (data/raw_data/day_ahead_no2_2025_hourly.csv)
 into exactly the same format as NO2_2025_forenklet.csv:
   - Timestamps (UTC) are converted to Norwegian local time.
-  - Removes the two days that do not have 24 hours (30 March with 23 hours
-    and 26 October with 25 hours, due to daylight saving time).
+  - Removes the two days that do not have 24 hours (30 March with 23 hours and 26 October with 25 hours).
   - time_start and time_end become running hour numbers (0-1, 1-2, ...).
   - dato is the Norwegian local date.
   - Prices are in EUR/MWh, rounded to 2 decimals.
