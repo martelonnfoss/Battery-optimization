@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 prosjektmappe = Path(__file__).resolve().parent.parent
 sys.path.append(str(prosjektmappe / "modell"))
-from prisdata import priser, scenarioer  # noqa: E402
+from prisdata import priser, scenarioer  
 
 farger = {
     "s1": "tab:blue",
@@ -26,7 +26,15 @@ farger = {
 timer_dag1 = list(range(1, 25))
 timer_dag2 = list(range(25, 49))
 
-fig, ax = plt.subplots(figsize=(10, 4.5))
+# ---- Stil som ligner LaTeX ----
+plt.rcParams.update({
+    "font.family": "serif",
+    "font.serif": ["Computer Modern Roman", "CMU Serif", "Times New Roman", "DejaVu Serif"],
+    "mathtext.fontset": "cm",
+    "font.size": 11,
+})
+
+fig, ax = plt.subplots(figsize=(9, 4.5))
 
 # Døgn 1: kjente priser
 ax.plot(timer_dag1, priser.loc[timer_dag1, "s1"], color="black",
@@ -54,9 +62,9 @@ ax.set_ylim(0, ymax * 1.10)
 ax.set_xticks([1, 6, 12, 18, 24, 30, 36, 42, 48])
 ax.set_xlabel("Model hour")
 ax.set_ylabel("Price [EUR/MWh]")
-ax.grid(True, alpha=0.3)
-ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.22), ncol=4,
-          fontsize=8, frameon=False)
+ax.grid(True, color="0.9", linewidth=0.8)
+ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4,
+          fontsize=9, frameon=False)
 
 plt.tight_layout()
 utfil = prosjektmappe / "analyses" / "ev_prisprofil.png"

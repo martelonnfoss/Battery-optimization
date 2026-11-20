@@ -263,6 +263,9 @@ def los_benders(
         # e. Kontroller grensene og beregn stoppkriteriet.
         gap = UB - LB
 
+        # Relativt gap i prosent av nedre grense (som i rapporten).
+        gap_prosent = 100 * gap / max(1.0, abs(LB))
+
         tillatt_gap = (
             absolutt_toleranse
             + relativ_toleranse * max(1.0, abs(LB))
@@ -286,12 +289,14 @@ def los_benders(
             "dual_EUR_per_MWh": pi,
             "LB_EUR": LB,
             "UB_EUR": UB,
-            "gap_EUR": gap
+            "gap_EUR": gap,
+            "gap_prosent": gap_prosent
         })
 
         print(
             f"Iterasjon {k}: E24={energi:.4f}, "
-            f"LB={LB:.6f}, UB={UB:.6f}, gap={gap:.6f}"
+            f"LB={LB:.6f}, UB={UB:.6f}, gap={gap:.6f}, "
+            f"gap={gap_prosent:.4f} %"
         )
 
         if gap <= tillatt_gap:
